@@ -1,26 +1,47 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
+  
+  --color-aged-green-100: #ecfdf5;
+  --color-aged-green-300: #6ee7b7;
+  --color-aged-green-400: #34d399;
+  --color-aged-green-500: #10b981;
+  --color-aged-green-600: #059669;
+  
+  --color-aged-soil-800: #422006;
+  --color-aged-soil-900: #291404;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-streak-orange: #f97316;
+  --color-streak-yellow: #fbbf24;
+  
+  /* Light theme */
+  --color-background: #f8fafc;
+  --color-foreground: #0f172a;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Elegant glassmorphism & shadow utilities for light theme */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.shadow-soft {
+  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05), 0 4px 10px -5px rgba(0,0,0,0.02);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
 }
