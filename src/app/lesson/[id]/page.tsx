@@ -10,6 +10,7 @@ import { StaticImageData } from "next/image";
 import soilLessonImg from "../../../../public/soil_lesson.png";
 import waterLessonImg from "../../../../public/water_lesson.png";
 import seedLessonImg from "../../../../public/seed_lesson.png";
+import heroImg from "../../../../public/hero_image.png";
 
 type StepType = 'info' | 'mcq' | 'mission' | 'flashcards';
 
@@ -613,7 +614,7 @@ export default function LessonPage() {
                   {/* Hero Background */}
                   <div className="absolute inset-0 z-0">
                     <Image
-                      src="/hero_image.png"
+                      src={heroImg}
                       alt="Hero Background"
                       fill
                       className="object-cover"
