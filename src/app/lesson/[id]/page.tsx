@@ -31,6 +31,7 @@ interface LessonStep {
   title: string;
   leftGradient: string;
   leftCardTitle: string;
+  leftCardSubtitle: string;
   leftCardIcon: React.ReactNode;
   imagePath: string | StaticImageData;
   narrativeBlocks?: NarrativeBlock[];
