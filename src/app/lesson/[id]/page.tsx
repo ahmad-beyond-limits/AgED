@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -214,8 +214,8 @@ const NarrativeBlockComponent = ({ block }: { block: NarrativeBlock }) => {
   const words = typeof block.text === 'string' ? block.text.split(" ") : [];
 
   return (
-    <div ref={containerRef} className="h-[200vh] relative border-t border-slate-200">
-      <div className="sticky top-0 h-screen flex flex-col justify-center px-6 md:px-10 lg:px-16 xl:px-24">
+    <div ref={containerRef} className="h-auto lg:h-[200vh] relative border-t border-slate-200">
+      <div className="relative lg:sticky top-0 h-auto lg:h-screen flex flex-col justify-center px-6 md:px-10 lg:px-16 xl:px-24 py-12 lg:py-0">
 
         {/* Storybook Reveal Header */}
         <motion.div
@@ -233,18 +233,31 @@ const NarrativeBlockComponent = ({ block }: { block: NarrativeBlock }) => {
           )}
         </motion.div>
 
-        {/* Typing on Scroll Text */}
-        <div className="text-xl md:text-2xl lg:text-3xl leading-relaxed font-medium mt-4 flex flex-wrap gap-x-2 gap-y-1.5 md:gap-x-2.5 md:gap-y-2">
+        {/* Typing on Scroll Text (Desktop) / Storybook Reveal (Mobile) */}
+        <motion.div 
+          className="text-xl md:text-2xl lg:text-3xl leading-relaxed font-medium mt-4 flex flex-wrap gap-x-2 gap-y-1.5 md:gap-x-2.5 md:gap-y-2"
+          initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        >
           {typeof block.text === 'string' ? (
             words.map((word, i) => {
               const start = i / words.length;
               const end = start + (1 / words.length);
-              return <Word key={i} progress={scrollYProgress} range={[Math.max(0, start - 0.1), Math.min(1, end + 0.1)]}>{word}</Word>
+              return (
+                <React.Fragment key={i}>
+                  <span className="lg:hidden text-slate-900">{word}</span>
+                  <span className="hidden lg:inline">
+                    <Word progress={scrollYProgress} range={[Math.max(0, start - 0.1), Math.min(1, end + 0.1)]}>{word}</Word>
+                  </span>
+                </React.Fragment>
+              );
             })
           ) : (
             block.text
           )}
-        </div>
+        </motion.div>
 
       </div>
     </div>
@@ -493,10 +506,10 @@ export default function LessonPage() {
   const isFullScreen = step.type === 'flashcards';
 
   return (
-    <div className="flex w-full min-h-screen bg-slate-50 relative">
+    <div className="flex flex-col lg:flex-row w-full min-h-screen bg-slate-50 relative">
 
-      {/* FIXED TOP NAVIGATION CARD (Centered globally in full screen, centered on left half in split screen) */}
-      <div className={`fixed top-6 z-50 flex justify-center px-4 pointer-events-none transition-all duration-700 ${isFullScreen ? 'left-0 right-0 w-full' : 'hidden md:flex left-0 w-1/2'}`}>
+      {/* FIXED TOP NAVIGATION CARD (DESKTOP ONLY) */}
+      <div className={`hidden lg:flex fixed top-6 z-50 justify-center px-4 pointer-events-none transition-all duration-700 ${isFullScreen ? 'left-0 right-0 w-full' : 'left-0 w-1/2'}`}>
         <div className="bg-white/95 backdrop-blur-3xl rounded-[24px] p-2.5 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] border border-white flex items-center justify-between gap-4 w-full max-w-xl pointer-events-auto">
           <button onClick={handleBack} className="text-slate-400 hover:text-slate-900 transition-colors bg-slate-50 p-2 rounded-[16px] border border-slate-100 shrink-0">
             <ChevronLeft size={24} strokeWidth={2.5} />
@@ -536,9 +549,38 @@ export default function LessonPage() {
         </div>
       </div>
 
-      {/* LEFT SIDE (FIXED) */}
-      <div className={`fixed top-0 left-0 bottom-0 bg-gradient-to-b ${step.leftGradient} flex-col justify-between pt-12 px-12 pb-0 transition-all duration-700 ${isFullScreen ? 'hidden' : 'hidden md:flex w-1/2'}`}>
-        <div className="flex-1 flex items-center justify-center pt-24 relative z-10 w-full">
+      {/* LEFT SIDE (HERO ON MOBILE, FIXED ON DESKTOP) */}
+      <div className={`w-full lg:w-1/2 bg-gradient-to-b ${step.leftGradient} flex-col justify-between pt-4 lg:pt-28 px-4 lg:px-12 pb-4 lg:pb-0 transition-all duration-700 relative lg:fixed lg:top-0 lg:left-0 lg:bottom-0 ${isFullScreen ? 'hidden' : 'flex'}`}>
+        
+        {/* MOBILE NAVIGATION CARD (Inside the Hero Card) */}
+        <div className="lg:hidden w-full flex justify-center z-50 mb-4">
+          <div className="bg-white/95 backdrop-blur-3xl rounded-[24px] p-2.5 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] border border-white flex items-center justify-between gap-4 w-full max-w-xl pointer-events-auto">
+            <button onClick={handleBack} className="text-slate-400 hover:text-slate-900 transition-colors bg-slate-50 p-2 rounded-[16px] border border-slate-100 shrink-0">
+              <ChevronLeft size={24} strokeWidth={2.5} />
+            </button>
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-col justify-center px-1">
+                <div className="flex items-center justify-between mb-1.5">
+                  <h4 className="text-slate-400 font-bold text-[9px] uppercase tracking-widest truncate">
+                    {step.leftCardTitle} • <span className="text-slate-900">{step.leftCardSubtitle}</span>
+                  </h4>
+                  <span className="text-[9px] font-bold text-slate-900 uppercase tracking-widest shrink-0 ml-2">
+                    {currentStepIndex + 1} / {lessonSteps.length}
+                  </span>
+                </div>
+                <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                  <div className="bg-slate-900 h-full rounded-full transition-all duration-700 ease-out" style={{ width: `${((currentStepIndex) / lessonSteps.length) * 100}%` }} />
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 text-rose-500 font-bold text-sm bg-rose-50 px-3 py-1.5 rounded-[16px] border border-rose-100 shrink-0">
+              <Heart fill="currentColor" size={16} />
+              <span>{hearts}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 flex items-center justify-center relative z-10 w-full min-h-[300px] lg:min-h-[400px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={step.title}
@@ -546,7 +588,7 @@ export default function LessonPage() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.05 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative w-full h-full min-h-[400px] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]"
+              className="relative w-full h-[40vh] lg:h-full min-h-[300px] lg:min-h-[400px] overflow-hidden rounded-[24px] lg:rounded-none shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]"
             >
               <Image
                 src={step.imagePath}
@@ -561,16 +603,8 @@ export default function LessonPage() {
         </div>
       </div>
 
-      {/* Mobile Header (Hidden on Desktop) */}
-      {!isFullScreen && (
-        <div className="md:hidden flex items-center justify-between p-6 border-b border-slate-100 bg-white sticky top-0 z-50">
-          <button onClick={handleBack} className="text-slate-400"><ChevronLeft size={28} /></button>
-          <div className="flex items-center gap-2 text-rose-500 font-bold"><Heart fill="currentColor" size={24} />{hearts}</div>
-        </div>
-      )}
-
       {/* RIGHT SIDE SCROLLABLE CONTENT */}
-      <div className={`w-full relative transition-all duration-700 min-h-screen ${isFullScreen ? 'md:w-full md:ml-0 bg-slate-50/50' : 'md:w-1/2 md:ml-[50%] bg-white'}`}>
+      <div className={`flex-1 w-full relative transition-all duration-700 lg:min-h-screen ${isFullScreen ? 'lg:w-full lg:ml-0 bg-slate-50/50' : 'bg-white lg:w-1/2 lg:ml-[50%]'}`}>
 
         {/* Content Area */}
         <div className="flex-1">
@@ -586,17 +620,29 @@ export default function LessonPage() {
               {/* === INFO STEP (Narrative Scroll) === */}
               {step.type === 'info' && (
                 <div>
-                  <div className="pt-20 md:pt-24 pb-10 px-6 md:px-10 lg:px-16 xl:px-24">
+                  <motion.div 
+                    className="pt-10 lg:pt-24 pb-10 px-6 md:px-10 lg:px-16 xl:px-24"
+                    initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+                    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                  >
                     <h1 className="text-3xl md:text-4xl xl:text-5xl font-serif tracking-tight leading-[1.2] mb-10 md:mb-16 text-slate-900">
                       {step.title}
                     </h1>
-                  </div>
+                  </motion.div>
 
                   {step.narrativeBlocks?.map((block) => (
                     <NarrativeBlockComponent key={block.id} block={block} />
                   ))}
 
-                  <div className="p-8 md:p-24 flex justify-center border-t border-slate-100 bg-slate-50">
+                  <motion.div 
+                    className="p-8 md:p-24 flex justify-center border-t border-slate-100 bg-slate-50"
+                    initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+                    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+                  >
                     <button
                       onClick={advanceStep}
                       className="bg-slate-900 text-white px-12 py-5 rounded-[24px] font-bold tracking-widest uppercase text-sm hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] flex items-center gap-4 group"
@@ -604,7 +650,7 @@ export default function LessonPage() {
                       Continue
                       <ChevronLeft size={20} className="rotate-180 group-hover:translate-x-1 transition-transform" />
                     </button>
-                  </div>
+                  </motion.div>
                 </div>
               )}
 
@@ -631,7 +677,13 @@ export default function LessonPage() {
 
               {/* === MISSION STEP === */}
               {step.type === 'mission' && (
-                <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center px-6 md:px-10 lg:px-16 xl:px-24 py-16 md:py-24">
+                <motion.div 
+                  className="min-h-[60vh] lg:min-h-screen flex flex-col justify-center px-6 md:px-10 lg:px-16 xl:px-24 py-16 lg:py-24"
+                  initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+                  whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+                >
                   <div className="inline-flex items-center gap-2 text-orange-500 font-bold text-sm uppercase tracking-widest mb-6">
                     <Target size={18} /> Action Required
                   </div>
@@ -647,12 +699,18 @@ export default function LessonPage() {
                   >
                     {step.missionAction}
                   </button>
-                </div>
+                </motion.div>
               )}
 
               {/* === MCQ STEP === */}
               {step.type === 'mcq' && (
-                <div className="min-h-[calc(100vh-80px)] flex flex-col justify-between pt-24 pb-12">
+                <motion.div 
+                  className="min-h-[60vh] lg:min-h-screen flex flex-col justify-center py-10 lg:py-24"
+                  initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+                  whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+                >
                   <div className="px-8 md:px-20 lg:px-24">
                     <h1 className="text-3xl lg:text-4xl font-serif text-slate-900 tracking-tight leading-[1.2] mb-16">
                       {step.title}
@@ -723,7 +781,7 @@ export default function LessonPage() {
                       {isChecking && !isCorrect && 'Try Again'}
                     </button>
                   </div>
-                </div>
+                </motion.div>
               )}
 
             </motion.div>
