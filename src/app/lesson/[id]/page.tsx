@@ -540,7 +540,7 @@ export default function LessonPage() {
         <div className="flex-1 flex items-center justify-center pt-24 relative z-10 w-full">
           <AnimatePresence mode="wait">
             <motion.div
-              key={step.imagePath}
+              key={step.title}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.05 }}
