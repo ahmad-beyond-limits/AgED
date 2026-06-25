@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Medal, Trophy, Star, Diamond, Zap } from "lucide-react";
+import heroImg from "../../public/hero_image.png";
 
 export function HeroSection() {
   return (
@@ -113,7 +114,7 @@ export function HeroSection() {
             {/* Tractor Image contained beautifully at the bottom */}
             <div className="relative w-full flex-1 min-h-[240px] mt-10 rounded-3xl overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-slate-100">
               <Image 
-                src="/hero_image.png" 
+                src={heroImg} 
                 alt="AgED Student" 
                 fill 
                 className="object-cover object-center"

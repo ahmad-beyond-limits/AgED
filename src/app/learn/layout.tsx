@@ -1,6 +1,7 @@
 import { Sidebar } from "@/components/Sidebar";
 import { RightPanel } from "@/components/RightPanel";
 import Image from "next/image";
+import heroImg from "../../../public/hero_image.png";
 
 export default function LearnLayout({
   children,
@@ -12,7 +13,7 @@ export default function LearnLayout({
       
       {/* Immersive Game Map Background */}
       <div className="absolute inset-0 z-0">
-        <Image src="/hero_image.png" alt="Background map" fill className="object-cover" priority />
+        <Image src={heroImg} alt="Background map" fill className="object-cover" priority />
       </div>
       
       {/* Dark gradient overlay to ensure UI legibility on edges */}

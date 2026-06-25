@@ -6,6 +6,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { X, Heart, Check, XCircle, Target, Sparkles, Sprout, Medal, Trophy, Diamond, ChevronLeft, ArrowRight, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "framer-motion";
+import { StaticImageData } from "next/image";
+import soilLessonImg from "../../../../public/soil_lesson.png";
+import waterLessonImg from "../../../../public/water_lesson.png";
+import seedLessonImg from "../../../../public/seed_lesson.png";
 
 type StepType = 'info' | 'mcq' | 'mission' | 'flashcards';
 
@@ -27,9 +31,8 @@ interface LessonStep {
   title: string;
   leftGradient: string;
   leftCardTitle: string;
-  leftCardSubtitle: string;
   leftCardIcon: React.ReactNode;
-  imagePath: string;
+  imagePath: string | StaticImageData;
   narrativeBlocks?: NarrativeBlock[];
   flashcards?: Flashcard[];
   // mcq / mission stuff
@@ -48,7 +51,7 @@ const lessonSteps: LessonStep[] = [
     leftCardTitle: 'Chapter 1',
     leftCardSubtitle: 'Soil Foundations',
     leftCardIcon: <Sprout size={24} className="text-orange-500" />,
-    imagePath: '/soil_lesson.png',
+    imagePath: soilLessonImg,
     narrativeBlocks: [
       {
         id: 'block1',
@@ -76,7 +79,7 @@ const lessonSteps: LessonStep[] = [
     leftCardTitle: 'Field Mission',
     leftCardSubtitle: 'Hands-on Learning',
     leftCardIcon: <Target size={24} className="text-orange-500" />,
-    imagePath: '/soil_lesson.png',
+    imagePath: soilLessonImg,
     content: 'Dig a hole 12 inches deep in your yard or farm. Observe the walls of the hole and label the layers you see based on color and texture changes. This will reveal your local soil horizons.',
     missionAction: 'I Accept This Mission'
   },
@@ -89,7 +92,7 @@ const lessonSteps: LessonStep[] = [
     leftCardTitle: 'Chapter 2',
     leftCardSubtitle: 'Hydrology',
     leftCardIcon: <Diamond size={24} className="text-blue-500" />,
-    imagePath: '/water_lesson.png',
+    imagePath: waterLessonImg,
     narrativeBlocks: [
       {
         id: 'block4',
@@ -110,7 +113,7 @@ const lessonSteps: LessonStep[] = [
     leftCardTitle: 'Knowledge Check',
     leftCardSubtitle: 'Test your understanding',
     leftCardIcon: <Sparkles size={24} className="text-blue-500" />,
-    imagePath: '/water_lesson.png',
+    imagePath: waterLessonImg,
     options: ['More sand', 'Organic matter', 'Gravel', 'Nothing, fast drainage is perfect'],
     correctAnswer: 1
   },
@@ -121,7 +124,7 @@ const lessonSteps: LessonStep[] = [
     leftCardTitle: 'Field Mission',
     leftCardSubtitle: 'Hands-on Learning',
     leftCardIcon: <Target size={24} className="text-blue-500" />,
-    imagePath: '/water_lesson.png',
+    imagePath: waterLessonImg,
     content: 'Pour a set amount of water into the hole you dug previously. Note the exact time it takes to disappear completely. If it drains too quickly, you need more organic matter; if it stays for hours, your drainage needs serious improvement.',
     missionAction: 'I Will Test My Soil'
   },
@@ -134,7 +137,7 @@ const lessonSteps: LessonStep[] = [
     leftCardTitle: 'Chapter 3',
     leftCardSubtitle: 'Plant Life',
     leftCardIcon: <Sprout size={24} className="text-emerald-500" />,
-    imagePath: '/seed_lesson.png',
+    imagePath: seedLessonImg,
     narrativeBlocks: [
       {
         id: 'block6',
@@ -160,7 +163,7 @@ const lessonSteps: LessonStep[] = [
     leftCardTitle: 'Chapter 4',
     leftCardSubtitle: 'Flashcard Review',
     leftCardIcon: <Sparkles size={24} className="text-blue-500" />,
-    imagePath: '/seed_lesson.png',
+    imagePath: seedLessonImg,
     flashcards: [
       { id: 'fc1', front: 'What is the "A Horizon" in a soil profile?', back: 'It is the topsoil layer, rich in organic matter and absolutely essential for plant nutrition and root growth.' },
       { id: 'fc2', front: 'How does Sand differ from Clay in water dynamics?', back: 'Sand has large particles that drain water quickly, while Clay consists of tiny particles that hold water tightly, risking drowned roots.' },
@@ -177,7 +180,7 @@ const lessonSteps: LessonStep[] = [
     leftCardTitle: 'Knowledge Check',
     leftCardSubtitle: 'Test your understanding',
     leftCardIcon: <Sparkles size={24} className="text-emerald-500" />,
-    imagePath: '/seed_lesson.png',
+    imagePath: seedLessonImg,
     options: ['Act as living mulch to suppress weeds', 'Provide a natural trellis for climbing', 'Fix nitrogen in the soil', 'Scare away pests'],
     correctAnswer: 2
   },
@@ -188,7 +191,7 @@ const lessonSteps: LessonStep[] = [
     leftCardTitle: 'Final Mission',
     leftCardSubtitle: 'Hands-on Learning',
     leftCardIcon: <Trophy size={24} className="text-amber-500" />,
-    imagePath: '/seed_lesson.png',
+    imagePath: seedLessonImg,
     content: 'Place exactly 10 seeds inside a damp paper towel and seal it in a bag. Check it daily for the emergence of the radicle (the first root). This teaches you to respect the specific timing and moisture required for different species.',
     missionAction: 'Start Germination'
   }
