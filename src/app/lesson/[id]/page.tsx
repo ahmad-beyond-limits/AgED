@@ -215,7 +215,7 @@ const NarrativeBlockComponent = ({ block }: { block: NarrativeBlock }) => {
 
   return (
     <div ref={containerRef} className="h-[200vh] relative border-t border-slate-200">
-      <div className="sticky top-0 h-screen flex flex-col justify-center px-8 md:px-10 lg:px-16 xl:px-24">
+      <div className="sticky top-0 h-screen flex flex-col justify-center px-6 md:px-10 lg:px-16 xl:px-24">
 
         {/* Storybook Reveal Header */}
         <motion.div
@@ -234,7 +234,7 @@ const NarrativeBlockComponent = ({ block }: { block: NarrativeBlock }) => {
         </motion.div>
 
         {/* Typing on Scroll Text */}
-        <div className="text-2xl lg:text-3xl leading-relaxed font-medium mt-4 flex flex-wrap gap-x-2.5 gap-y-2">
+        <div className="text-xl md:text-2xl lg:text-3xl leading-relaxed font-medium mt-4 flex flex-wrap gap-x-2 gap-y-1.5 md:gap-x-2.5 md:gap-y-2">
           {typeof block.text === 'string' ? (
             words.map((word, i) => {
               const start = i / words.length;
@@ -586,8 +586,8 @@ export default function LessonPage() {
               {/* === INFO STEP (Narrative Scroll) === */}
               {step.type === 'info' && (
                 <div>
-                  <div className="pt-24 pb-12 px-8 md:px-10 lg:px-16 xl:px-24">
-                    <h1 className="text-4xl md:text-5xl xl:text-7xl font-serif tracking-tight leading-[1.1] mb-8 uppercase text-slate-900">
+                  <div className="pt-20 md:pt-24 pb-10 px-6 md:px-10 lg:px-16 xl:px-24">
+                    <h1 className="text-3xl md:text-4xl xl:text-5xl font-serif tracking-tight leading-[1.2] mb-10 md:mb-16 text-slate-900">
                       {step.title}
                     </h1>
                   </div>
@@ -631,14 +631,14 @@ export default function LessonPage() {
 
               {/* === MISSION STEP === */}
               {step.type === 'mission' && (
-                <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center px-8 md:px-10 lg:px-16 xl:px-24 py-24">
+                <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center px-6 md:px-10 lg:px-16 xl:px-24 py-16 md:py-24">
                   <div className="inline-flex items-center gap-2 text-orange-500 font-bold text-sm uppercase tracking-widest mb-6">
                     <Target size={18} /> Action Required
                   </div>
-                  <h1 className="text-4xl md:text-5xl xl:text-7xl font-serif tracking-tight leading-[1.1] mb-12 uppercase text-slate-900">
+                  <h1 className="text-3xl md:text-5xl xl:text-7xl font-serif tracking-tight leading-[1.1] mb-8 md:mb-12 uppercase text-slate-900">
                     {step.title}
                   </h1>
-                  <p className="text-xl md:text-2xl text-slate-600 font-medium leading-relaxed mb-16">
+                  <p className="text-lg md:text-xl xl:text-2xl text-slate-600 font-medium leading-relaxed mb-12 md:mb-16">
                     {step.content as string}
                   </p>
                   <button
